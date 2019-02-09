@@ -24,11 +24,15 @@ dependencies:
 
 library:
   source-dirs: src
+  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies
   dependencies:
     - bytestring
+    - cborg
     - containers
+    - deepseq
     - network
     - resourcet
+    - serialise
     - streaming
     - udp-streaming
     - unordered-containers

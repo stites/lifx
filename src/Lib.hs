@@ -1,6 +1,7 @@
 module Lib
-    ( someFunc
-    ) where
-
+  ( someFunc
+  )
+where
+import Prelude
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"

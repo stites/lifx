@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ecc18a9cb5cabe3cfd4b4931d3760a1939edebf564e03d0b34244ad6b9a911c8
+-- hash: 5ad9b7fd3963f4b61dabbb799a6209c40e378864eaf027519f6cfbe4a765312f
 
 name:           lifx
 version:        0.1.0.0
@@ -27,14 +27,26 @@ source-repository head
 
 library
   exposed-modules:
+      Data.LIFX
       Data.LIFX.Header
       Lib
   other-modules:
       Paths_lifx
   hs-source-dirs:
       src
+  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , cborg
+    , containers
+    , deepseq
+    , network
+    , resourcet
+    , serialise
+    , streaming
+    , udp-streaming
+    , unordered-containers
   default-language: Haskell2010
 
 executable lifx-exe
