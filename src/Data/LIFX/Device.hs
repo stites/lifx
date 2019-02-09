@@ -35,7 +35,7 @@ import Data.ByteString
 --
 -- The LIFX Protocol utilizes UDP/IP for all messages covered by this documentation.
 data Service
-  = UDP             -- ^ UDP value is 1
+  = UDP             -- ^ UDP value is 1, it should be represented as an unsigned 8-bit integer
   deriving (Eq, Ord, Show)
 
 serviceValue :: Num i => Service -> i
@@ -79,7 +79,7 @@ data DeviceMessages
   --
   -- When using this message the Frame tagged field must be set to one (1).
 
-  | StateService Word8 Word32  -- ^ 3
+  | StateService Service Port  -- ^ 3
   -- Response to GetService message.
   --
   -- Provides the device Service and port. If the Service is temporarily
@@ -158,14 +158,14 @@ data DeviceMessages
   | GetPower -- ^ 20
   -- Get device power level. No payload is required. Causes the device to transmit a StatePower message.
 
-  | SetPower Word16 -- ^ 21
+  | SetPower PowerLevel -- ^ 21
   -- Set device power level.
   --
   -- Zero implies standby and non-zero sets a corresponding power draw level. Currently only 0 and 65535 are supported.
   -- Field          | Type
   -- level          | unsigned 16-bit integer
 
-  | StatePower Word16 -- ^ 22
+  | StatePower PowerLevel -- ^ 22
   -- Response to GetPower message.
   --
   -- Provides device power level.
@@ -210,7 +210,7 @@ data DeviceMessages
   | GetInfo -- ^ 34
   -- Get run-time information. No payload is required. Causes the device to transmit a StateInfo message.
 
-  | StateInfo Word64 Word64 Word64 -- ^ 35
+  | StateInfo Time Time Time -- ^ 35
   -- Response to GetInfo message.
   --
   -- Provides run-time information of device.
@@ -232,7 +232,7 @@ data DeviceMessages
   -- No payload is required.
   -- Causes the device to transmit a StateLocation message.
 
-  | SetLocation ByteString ByteString Int64 -- ^ 49
+  | SetLocation ByteString Label Time -- ^ 49
   -- Set the device location.
   --
   -- Applications wishing to change either the label or location attributes MUST
@@ -257,7 +257,7 @@ data DeviceMessages
   -- label          | string, size: 32
   -- updated_at     | integer, size: 64
 
-  | StateLocation ByteString ByteString Word64 -- ^ 50
+  | StateLocation ByteString Label Time -- ^ 50
   -- Device location.
   --
   -- Field          | Type
@@ -270,7 +270,7 @@ data DeviceMessages
   -- No payload is required.
   -- Causes the device to transmit a StateGroup message.
 
-  | SetGroup ByteString ByteString Word64 -- ^ 52
+  | SetGroup ByteString Label Time -- ^ 52
   -- Set the device group.
   --
   -- Applications wishing to change either the label or group attributes MUST
@@ -295,7 +295,7 @@ data DeviceMessages
   -- label          | string, size: 32
   -- updated_at     | integer, size: 64
 
-  | StateGroup ByteString ByteString Word64 -- ^ 53
+  | StateGroup ByteString Label Time -- ^ 53
   -- Device group.
   --
   -- Field          | Type
