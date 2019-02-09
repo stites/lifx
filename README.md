@@ -1,4 +1,4 @@
-# Unfinished Haskell bindings to LIFX LAN protocol
+# Unfinished Haskell bindings to LIFX LAN protocol (v2.0)
 
 Status: Haitus. This was primarily a POC for someone else who, ultimately,
 found a completed node library doing the same thing. I am publicising this
