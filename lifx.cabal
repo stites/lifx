@@ -1,0 +1,64 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: ecc18a9cb5cabe3cfd4b4931d3760a1939edebf564e03d0b34244ad6b9a911c8
+
+name:           lifx
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/stites/lifx#readme>
+homepage:       https://github.com/stites/lifx#readme
+bug-reports:    https://github.com/stites/lifx/issues
+author:         Sam Stites
+maintainer:     fnz@fgvgrf.vb (cipher:rot13)
+copyright:      Copyright: (c) 2018 Sam Stites
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/stites/lifx
+
+library
+  exposed-modules:
+      Data.LIFX.Header
+      Lib
+  other-modules:
+      Paths_lifx
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable lifx-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_lifx
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , lifx
+    , optparse-applicative
+  default-language: Haskell2010
+
+test-suite lifx-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_lifx
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , lifx
+  default-language: Haskell2010
