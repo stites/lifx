@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5ad9b7fd3963f4b61dabbb799a6209c40e378864eaf027519f6cfbe4a765312f
+-- hash: c57fc8474fa7c5fe07625602b85d7eea346f392f8e64ed6ba20b7c05eab44a52
 
 name:           lifx
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       Data.LIFX
+      Data.LIFX.Device
       Data.LIFX.Header
       Lib
   other-modules:
