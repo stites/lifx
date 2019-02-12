@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 18bce72f7e2180c7d870d5567e0315d67acc3305ca83b18d31d4a6748d69d49b
+-- hash: ebde7d9a0d6130faaa6fe50471524d8656420aac08a30250f236c8b9c465e35c
 
 name:           lifx
 version:        0.1.0.0
@@ -38,7 +38,7 @@ library
       Paths_lifx
   hs-source-dirs:
       src
-  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies
+  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies, DataKinds
   build-depends:
       base >=4.7 && <5
     , bytestring
@@ -47,13 +47,14 @@ library
     , deepseq
     , network
     , resourcet
+    , safe-exceptions
     , serialise
     , streaming
     , udp-streaming
     , unordered-containers
   default-language: Haskell2010
 
-executable lifx-exe
+executable lifx
   main-is: Main.hs
   other-modules:
       Paths_lifx
@@ -66,7 +67,7 @@ executable lifx-exe
     , optparse-applicative
   default-language: Haskell2010
 
-test-suite lifx-test
+test-suite spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:

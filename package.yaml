@@ -24,7 +24,7 @@ dependencies:
 
 library:
   source-dirs: src
-  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies
+  default-extensions: LambdaCase, OverloadedStrings, DeriveGeneric, InstanceSigs, KindSignatures, NoImplicitPrelude, TypeApplications, TypeFamilies, DataKinds
   dependencies:
     - bytestring
     - cborg
@@ -32,13 +32,14 @@ library:
     - deepseq
     - network
     - resourcet
+    - safe-exceptions
     - serialise
     - streaming
     - udp-streaming
     - unordered-containers
 
 executables:
-  lifx-exe:
+  lifx:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -50,7 +51,7 @@ executables:
     - optparse-applicative
 
 tests:
-  lifx-test:
+  spec:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:

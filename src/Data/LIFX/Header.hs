@@ -19,7 +19,13 @@
 -- Payload is covered separately in the documentation for the various message
 -- types.
 -------------------------------------------------------------------------------
-module Data.LIFX.Header where
+{-# LANGUAGE ScopedTypeVariables #-}
+module Data.LIFX.Header
+  ( Word(..)
+  , Frame, frame
+  , FrameAddress, frameAddress
+  , ProtocolHeader, protocolHeader
+  ) where
 
 import Prelude hiding (Word, sequence)
 
@@ -40,7 +46,10 @@ newtype Word (rep :: Nat) = Word Word64
   deriving (Eq, Ord, Show, Generic)
 
 instance KnownNat r => Serialise (Word r) where
+  encode :: forall r . KnownNat r => Word r -> Encoding
   encode (Word s) = foldMap (encodeBool . testBit s) [0..fromIntegral (natVal (Proxy @r)) - 1]
+
+  decode :: forall r s . KnownNat r => Decoder s (Word r)
   decode = do
     bools <- replicateM (fromIntegral (natVal (Proxy @r))) decodeBool
     pure $ Word $ foldl (\r (i, b) -> if b then setBit r i else r) zeroBits $ zip [0..] bools

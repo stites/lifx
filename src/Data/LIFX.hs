@@ -4,11 +4,11 @@ import Prelude
 import GHC.Generics
 import qualified Data.LIFX.Header as Header
 
-data Message = Message
+data Message x = Message
   { frame :: Header.Frame
   , frameAddress :: Header.FrameAddress
   , protocolHeader :: Header.ProtocolHeader
-  , payload :: Header.Payload
+  , payload :: x
   } deriving (Eq, Ord, Show, Generic)
 
 

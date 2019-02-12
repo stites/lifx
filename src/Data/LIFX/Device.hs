@@ -21,9 +21,14 @@
 module Data.LIFX.Device where
 
 import Prelude
-import GHC.Word
-import GHC.Int
+
+import Codec.Serialise
+import Codec.Serialise.Decoding
+import Codec.Serialise.Encoding
 import Data.ByteString
+import GHC.Int
+import GHC.Generics
+import GHC.Word
 
 -- *  Enumerated Types
 
@@ -38,6 +43,16 @@ data Service
   = UDP             -- ^ UDP value is 1, it should be represented as an unsigned 8-bit integer
   deriving (Eq, Ord, Show)
 
+instance Serialise Service where
+  encode :: Service -> Encoding
+  encode UDP = encodeBool True
+
+  decode :: Decoder s Service
+  decode =
+    decodeBool >>= \case
+      True -> pure UDP
+      False -> fail "Error: Expected to decode a single bit-encoded 1 representing UDP. Found 0."
+
 serviceValue :: Num i => Service -> i
 serviceValue UDP = 1
 
@@ -49,6 +64,10 @@ serviceValue UDP = 1
 --
 -- If you are setting a label/group/location for your light, it is highly recommended you store the label as a utf-8 string for compatibility with existing clients.
 newtype Label = Label String
+  deriving (Eq, Ord, Show, Generic)
+
+
+instance Serialise Label
 
 -- The IP port number used by a LIFX device for a specific 'Service'.
 --
@@ -60,14 +79,33 @@ newtype Label = Label String
 --
 -- To get the best compatibility across both newer and older LIFX devices, clients should bind to UDP port 56700.
 newtype Port = Port Word32
+  deriving (Eq, Ord, Show, Generic)
+
+instance Serialise Port
 
 -- | The power level can be either standby (0) or enabled (65535).
 -- Currently, only the values 0 and 65535 are supported
-newtype PowerLevel = PowerLevel Word16
+data PowerLevel
+  = Standby
+  | Enabled
+  deriving (Eq, Ord, Show, Generic)
+
+instance Serialise PowerLevel where
+  encode = \case
+    Standby -> encodeWord16 0
+    Enabled -> encodeWord16 65535
+
+  decode =
+    decodeWord16 >>= \case
+      0     -> pure Standby
+      65535 -> pure Enabled
+      x -> fail $ "Error: Powerlevel only supports the values 0 (standby) and 65535 (enabled). Found: " ++ show x
 
 -- | All time values have a precision of nanoseconds. When an absolute time value is provided, then it is the number of nanoseconds since the epoch, i.e Thursday 1st January 1970 00:00:00.
 newtype Time = Time Word64
+  deriving (Eq, Ord, Show, Generic)
 
+instance Serialise Time
 
 -- *  Device Messages
 
